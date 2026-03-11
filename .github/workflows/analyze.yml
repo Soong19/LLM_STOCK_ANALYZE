@@ -1,0 +1,36 @@
+name: AI Stock Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: '股票代码 (例如: 600519(茅台), 00700(腾讯))'
+        required: true
+        type: string
+        default: '600519'
+
+jobs:
+  analyze-stock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run AI Stock Analyst
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          python main.py "${{ github.event.inputs.symbol }}"

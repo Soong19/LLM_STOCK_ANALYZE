@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       symbol:
-        description: '股票代码 (例如: 600519(茅台), 00700(腾讯))'
+        description: '股票代码，多个请用逗号分隔，最多20个 (例如: 600519,00700)'
         required: true
         type: string
         default: '600519'
